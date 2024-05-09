@@ -14,14 +14,10 @@ function App() {
         setFakeAPI(data)
         console.log(data)
       })
-      .then((data) => {
-        if(fakeAPI.length > 0){
-        setFakeAPI("")
-        }
-      })
       .catch((error) => {
         console.error(error)
       })
+      .then()
     }
     return (
       <>
@@ -29,7 +25,7 @@ function App() {
         <button onClick={Fetching} >
           Get
         </button>
-        {/* {fakeAPI.length > 0 && (
+        {fakeAPI.length > 0 && (
       <ul>{fakeAPI.map(details => {
         return(
           <li>
@@ -42,7 +38,7 @@ function App() {
         )
       })}</ul>
     )
-    } */}
+    }
       </div>
     </>
   )
