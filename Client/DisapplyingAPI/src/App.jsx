@@ -47,19 +47,13 @@ function App() {
           <button onClick={handleRemoveContent}>Get</button>
           {fakeAPI.length > 0 && (
             <ul>
-              {fakeAPI.map((details) => {
-                const titleChecking = details.filter((sortingMensList) =>{
-                  return (
-                    <li key={details}>
-                      <p>{details.title}</p>
-                      <p>{details.category}</p>
-                      <p>{details.description}</p>
-                      <p>{details.image}</p>
-                      <p>{details.price}</p>
-                    </li>
-                  );
-                })
-              })}
+              {fakeAPI
+                .filter(product => product.title.includes("Mens")) 
+                .map((filteredProduct, index) => (
+                  <li key={index}>
+                  <p>{filteredProduct.title}</p>
+                  </li> 
+                ))}
             </ul>
           )}
         </div>
