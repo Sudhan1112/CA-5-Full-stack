@@ -1,47 +1,71 @@
-import React, { useEffect, useState } from 'react'
-import './App.css'
+import React, { useEffect, useState } from "react";
 
 function App() {
-  const [fakeAPI, setFakeAPI] = useState("");
+  const [fakeAPI, setFakeAPI] = useState([]);
+  const [next, setNext] = useState("initial");
 
-
-  const Fetching = () => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => {
-        setFakeAPI(data)
-        console.log(data)
+  const fetchDataFromAPI = async () => {
+    await fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setFakeAPI(json);
       })
       .catch((error) => {
-        console.error(error)
-      })
-      .then()
-    }
-    return (
-      <>
-      <div>
-        <button onClick={Fetching} >
-          Get
-        </button>
-        {fakeAPI.length > 0 && (
-      <ul>{fakeAPI.map(details => {
-        return(
-          <li>
-          <p>{details.category}</p>
-          <p>{details.description}</p>
-          <p>{details.image}</p>
-          <p>{details.price}</p>
-          <p>{details.title}</p>
-          </li>
-        )
-      })}</ul>
-    )
-    }
-      </div>
+        console.error('Error fetching data:', error);
+      });
+  };
+
+  const handleNextOne = () => {
+    fetchDataFromAPI();
+    setNext("loading");
+  };
+
+  const handleNextTwo = () => {
+    setNext("display");
+  };
+
+  const handleRemoveContent = () => {
+    setFakeAPI([]);
+    setNext("initial");
+  };
+
+  return (
+    <>
+      {next === "initial" && (
+        <div>
+          <button onClick={handleNextOne}>Get</button>
+        </div>
+      )}
+      {next === "loading" && (
+        <div>
+          <button onClick={handleNextTwo}>Get</button>
+        </div>
+      )}
+      {next === "display" && (
+        <div>
+          <button onClick={handleRemoveContent}>Get</button>
+          {fakeAPI.length > 0 && (
+            <ul>
+              {fakeAPI.map((details) => {
+                const titleChecking = details.filter((sortingMensList) =>{
+                  return (
+                    <li key={details}>
+                      <p>{details.title}</p>
+                      <p>{details.category}</p>
+                      <p>{details.description}</p>
+                      <p>{details.image}</p>
+                      <p>{details.price}</p>
+                    </li>
+                  );
+                })
+              })}
+            </ul>
+          )}
+        </div>
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
